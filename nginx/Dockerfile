@@ -18,7 +18,7 @@ RUN cd /usr/src/ && tar xzvf nginx-1.9.9.tar.gz && cd /usr/src/nginx-1.9.9 && ./
 RUN mkdir /var/log/nginx/
 
 #use our custom log to syslog-ng config - rest is default season to your needs
-ADD conf/nginx/nginx.conf /usr/local/nginx/conf/nginx.conf
+ADD ./conf/nginx/nginx.conf /usr/local/nginx/conf/nginx.conf
 
 #runit daemon scripts
 RUN mkdir -p /etc/sv/nginx
@@ -30,12 +30,12 @@ RUN ln -s /etc/sv/nginx /etc/service/
 ADD ./conf/syslog-ng/custom.syslog-ng.conf /etc/syslog-ng/conf.d
 ADD ./conf/syslog-ng/syslog-ng.conf /etc/syslog-ng/
 
-#cleanup remove gcc + apache
-RUN apt-get remove -y apache2 apache2-bin apache2-data apache2-utils build-essential
+#cleanup remove gcc
+RUN apt-get remove -y build-essential
 
 RUN apt-get autoremove -y && apt-get autoclean -y
 CMD ["/sbin/my_init"]
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-EXPOSE 80 
+EXPOSE 8080 
