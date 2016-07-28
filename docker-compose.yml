@@ -2,5 +2,7 @@ version: '2'
 services:
     nginx:
         build: ./nginx
-        ports: [9000]
+        container_name: nginx
+        ports:
+            - "9000:8080" 
                 
